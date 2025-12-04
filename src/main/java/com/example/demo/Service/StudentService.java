@@ -37,6 +37,8 @@ public class StudentService  {
         student.setName(dto.getName());
         student.setAge(dto.getAge());
         student.setEmail(dto.getEmail());
+        student.setPhone(dto.getPhone());
+       
 
         Student updated = studentRepo.save(student);
         return mapper.map(updated, StudentDto.class);
@@ -66,13 +68,19 @@ public class StudentService  {
 
 //ENROLL A STUDENT INTO A COURSE
     public StudentDto enrollStudent(Long studentId, Long courseId) {
+  
+    	
     	Student student = studentRepo.findById(studentId)
     			.orElseThrow(()  -> new ResourceNotFoundException("Student Not Found"));
     	Course course = courseRepo.findById(courseId)
     			.orElseThrow(()  -> new ResourceNotFoundException("Course Not Found"));
     	student.getCourses().add(course);
-    	studentRepo.save(student);
+    		
+    	studentRepo.save(student);    	
     	return mapper.map(student, StudentDto.class);
+    	
+    	
+    
     			
     }
 

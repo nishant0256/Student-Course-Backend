@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.CourseDto;
 import com.example.demo.Service.CourseService;
-
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/courses")
 public class CourseController {
 
