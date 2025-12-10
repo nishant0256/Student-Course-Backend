@@ -3,36 +3,24 @@ package com.example.demo.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.*;
+
 @Entity
-
 public class Course {
-	
-	@Id
 
-	private Long id;
-	
-	private String title;
-	private String description;
-	
-	@ManyToMany(mappedBy ="courses")
-	private List<Student> students =new ArrayList<>();
-	
-	public Course() {}
+    @Id
+    private Long id;
 
-	public Course(Long id, String title, String description, List<Student> students) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.students = students;
-	}
+    private String title;
+    private String description;
+
+    @ManyToMany(mappedBy = "courses")
+    @JsonBackReference   // ✅ FIX #2 (BREAKS LOOP)
+    private List<Student> students = new ArrayList<>();
+
+    public Course() {}
 
 	public Long getId() {
 		return id;
@@ -65,6 +53,7 @@ public class Course {
 	public void setStudents(List<Student> students) {
 		this.students = students;
 	}
-	
-	
+
+    // getters & setters (UNCHANGED)
+    
 }

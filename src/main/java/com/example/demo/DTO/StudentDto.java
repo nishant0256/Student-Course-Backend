@@ -3,39 +3,23 @@ package com.example.demo.DTO;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 
 public class StudentDto {
 
-	private Long id;
-	private String name;
-	private String email;
-	private Integer age;
-	private String gender;
-	private Long phone;
-	@CreationTimestamp
-	@JsonFormat
-	private LocalDate createdDate;
-	
-	private List<CourseDto> courses;
-	
-	public StudentDto() {}
+    private Long id;
+    private String name;
+    private String email;
+    private Integer age;
+    private String gender;
+    private Long phone;
 
-	public StudentDto(Long id, String name, String email, Integer age, String gender, Long phone,LocalDate createdDate,
-			List<CourseDto> courses) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.age = age;
-		this.gender = gender;
-		this.phone = phone;
-		this.createdDate = createdDate;
-		this.courses = courses;
-	}
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdDate;
+
+    private List<CourseDto> courses;
+
+    public StudentDto() {}
 
 	public Long getId() {
 		return id;
@@ -85,6 +69,14 @@ public class StudentDto {
 		this.phone = phone;
 	}
 
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDate createdDate) {
+		this.createdDate = createdDate;
+	}
+
 	public List<CourseDto> getCourses() {
 		return courses;
 	}
@@ -93,14 +85,7 @@ public class StudentDto {
 		this.courses = courses;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
-	
-	
-	
+    // getters & setters
+    
+    
 }

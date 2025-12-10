@@ -6,53 +6,38 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="students")
+@Table(name = "students")
 public class Student {
 
-	@Id
+    @Id
+    private Long id;
 
-	private Long id;
+    private String name;
+    private String email;
+    private Integer age;
+    private String gender;
+    private Long phone;
 
-	private String name;
-	private String email;
-	private Integer age;
-	private String gender;
-	private Long phone;
-	@CreationTimestamp
-	@JsonFormat
-	private LocalDate createdDate;
-	@ManyToMany
-	@JoinTable(name = "student_courses", 
-	joinColumns = @JoinColumn(name = "student_id"),
-	inverseJoinColumns = @JoinColumn(name = "course_id"))
-	
-	private List<Course> courses = new ArrayList<>();
-	
-	public Student() {}
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdDate;
 
-	public Student(Long id, String name, String email, Integer age, String gender, Long phone,LocalDate createdDate,
-			List<Course> courses) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.age = age;
-		this.gender = gender;
-		this.phone = phone;
-		this.createdDate = createdDate ;
-		this.courses = courses;
-	}
+    @ManyToMany
+    @JoinTable(
+        name = "student_courses",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    @JsonManagedReference   // ✅ FIX #1
+    private List<Course> courses = new ArrayList<>();
+
+    public Student() {}
 
 	public Long getId() {
 		return id;
@@ -118,6 +103,6 @@ public class Student {
 		this.courses = courses;
 	}
 
-	
-
+    // getters & setters (UNCHANGED)
+    
 }
