@@ -16,6 +16,16 @@ import jakarta.persistence.*;
 public class Student {
 
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_seq_gen"
+        )
+    
+    @SequenceGenerator(
+            name = "student_seq_gen",
+            sequenceName = "student_seq",
+            allocationSize = 1
+        )
     private Long id;
 
     private String name;
@@ -38,6 +48,8 @@ public class Student {
     private List<Course> courses = new ArrayList<>();
 
     public Student() {}
+    
+ // getters & setters (UNCHANGED)
 
 	public Long getId() {
 		return id;
@@ -103,6 +115,6 @@ public class Student {
 		this.courses = courses;
 	}
 
-    // getters & setters (UNCHANGED)
+    
     
 }

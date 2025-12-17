@@ -3,12 +3,13 @@ package com.example.demo.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name = "course") // explicit table name (lowercase 'course')
-@NoArgsConstructor
 public class Course {
 
     @Id
@@ -20,17 +21,17 @@ public class Course {
     private String description;
 
     @ManyToMany(mappedBy = "courses")
+    @JsonBackReference
     private List<Student> students = new ArrayList<>();
 
     public Course() {}
     
-    public Course(Long id, String title, String description, List<Student> students) {
-        this.id = id;
+
+    // (Optional constructor – safe to keep)
+    public Course(String title, String description) {
         this.title = title;
         this.description = description;
-        this.students = students;
     }
-
     // getters / setters (keep your existing ones)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
