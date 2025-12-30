@@ -1,11 +1,13 @@
 package com.example.demo.Entity;
 
 import jakarta.persistence.*;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(columnNames = "username")
+)
 public class User {
 
     @Id
@@ -13,9 +15,15 @@ public class User {
     @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ", allocationSize = 1)
     private Long id;
 
-    private String username;
+    @Column(nullable = false, unique = true)
+    private String username; // email
+
+    @Column(nullable = false)
     private String password;
-    private boolean active;
+
+    // 🔥 CRITICAL FIX
+    @Column(nullable = false)
+    private boolean enabled = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -25,53 +33,45 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User() {}
+    // ===== getters & setters =====
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public boolean isActive() {
-		return active;
-	}
+    public boolean isEnabled() {   // 🔥 REQUIRED by Spring Security
+        return enabled;
+    }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-
-    // getters & setters...
-    
-    
-    
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
-
-    
-

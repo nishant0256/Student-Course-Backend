@@ -6,19 +6,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.demo.Repositories.UserRepository;
 import com.example.demo.Entity.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired private UserRepository userRepo;
+
+    @Autowired
+    private UserRepository userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
         User u = userRepo.findByUsername(username)
-           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var authorities = u.getRoles().stream()
-            .map(r -> new SimpleGrantedAuthority(r.getName()))
-            .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(u.getUsername(), u.getPassword(), authorities);
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        List<SimpleGrantedAuthority> authorities = u.getRoles().stream()
+                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                .collect(Collectors.toList());
+
+        // ✅ IMPORTANT FIX: pass enabled flag
+        return new org.springframework.security.core.userdetails.User(
+                u.getUsername(),
+                u.getPassword(),
+                u.isEnabled(),   // 👈 THIS FIXES "User account is disabled"
+                true,            // accountNonExpired
+                true,            // credentialsNonExpired
+                true,            // accountNonLocked
+                authorities
+        );
     }
 }

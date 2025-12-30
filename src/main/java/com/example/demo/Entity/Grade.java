@@ -2,17 +2,19 @@ package com.example.demo.Entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "grades")
 public class Grade {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grade_seq_gen")
+    @SequenceGenerator(
+            name = "grade_seq_gen",
+            sequenceName = "grade_seq",
+            allocationSize = 1
+    )
     private Long id; // manual like Student/Course
 
     @ManyToOne

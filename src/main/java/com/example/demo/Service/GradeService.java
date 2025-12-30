@@ -53,6 +53,14 @@ public class GradeService {
         return toDto(saved);
     }
 
+    public List<GradeDto> getAllGrades() {
+        return gradeRepo.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+
     // UPDATE
     public GradeDto updateGrade(Long id, GradeRequest request) {
         Grade grade = gradeRepo.findById(id)

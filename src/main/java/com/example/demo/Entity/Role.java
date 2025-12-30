@@ -6,20 +6,19 @@ import jakarta.persistence.*;
 @Table(name = "roles")
 public class Role {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
-	@SequenceGenerator(name = "role_seq", sequenceName = "ROLE_SEQ", allocationSize = 1)
-	private Long id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
+    @SequenceGenerator(name = "role_seq", sequenceName = "ROLE_SEQ", allocationSize = 1)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     public Role() {}
+    public Role(String name) { this.name = name; }
 
-    public Role(String name) {
-        this.name = name;
-    }
+    // getters & setters
+
 
     public Long getId() {
         return id;

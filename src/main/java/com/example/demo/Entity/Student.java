@@ -1,13 +1,7 @@
 package com.example.demo.Entity;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
 
@@ -19,13 +13,12 @@ public class Student {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "student_seq_gen"
-        )
-    
+    )
     @SequenceGenerator(
             name = "student_seq_gen",
             sequenceName = "student_seq",
             allocationSize = 1
-        )
+    )
     private Long id;
 
     private String name;
@@ -34,87 +27,98 @@ public class Student {
     private String gender;
     private Long phone;
 
-    @CreationTimestamp
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate createdDate;
+    // ================= COURSE =================
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-    @ManyToMany
-    @JoinTable(
-        name = "student_courses",
-        joinColumns = @JoinColumn(name = "student_id"),
-        inverseJoinColumns = @JoinColumn(name = "course_id")
+    // ================= ATTENDANCE =================
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    @JsonManagedReference   // ✅ FIX #1
-    private List<Course> courses = new ArrayList<>();
+    private List<Attendance> attendanceList = new ArrayList<>();
 
-    public Student() {}
-    
- // getters & setters (UNCHANGED)
+    // ================= GRADES =================
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Grade> grades = new ArrayList<>();
 
-	public Long getId() {
-		return id;
-	}
+    // ================= GETTERS & SETTERS =================
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Integer getAge() {
-		return age;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+    public Integer getAge() {
+        return age;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public Long getPhone() {
-		return phone;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setPhone(Long phone) {
-		this.phone = phone;
-	}
+    public Long getPhone() {
+        return phone;
+    }
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
-	}
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
-	}
+    public Course getCourse() {
+        return course;
+    }
 
-	public List<Course> getCourses() {
-		return courses;
-	}
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
+    public List<Attendance> getAttendanceList() {
+        return attendanceList;
+    }
 
-    
-    
+    public void setAttendanceList(List<Attendance> attendanceList) {
+        this.attendanceList = attendanceList;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
+    }
 }

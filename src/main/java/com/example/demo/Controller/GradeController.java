@@ -17,6 +17,12 @@ public class GradeController {
     @Autowired
     private GradeService gradeService;
 
+    @GetMapping
+    public List<GradeDto> getAll() {
+        return gradeService.getAllGrades();
+    }
+
+
     @PostMapping
     public GradeDto create(@RequestBody GradeRequest request) {
         return gradeService.createGrade(request);
